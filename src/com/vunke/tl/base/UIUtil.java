@@ -25,11 +25,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.kxy.tl.activity.AuthActivity;
+import com.kxy.tl.activity.AuthSuccessActivity;
 import com.kxy.tl.dlg.CustomProgressDialog;
 import com.kxy.tl.dlg.TipInfoDialog;
 import com.lzy.okhttputils.OkHttpUtils;
 import com.vunke.tl.auth.Auth;
-import com.vunke.tl.service.GroupStrategy.GroupStrategyBean;
+import com.vunke.tl.bean.GroupStrategy.GroupStrategyBean;
 import com.vunke.tl.util.Constants;
 import com.vunke.tl.util.LogUtil;
 import com.vunke.tl.util.SharedPreferencesUtil;
@@ -182,69 +183,10 @@ public class UIUtil {
 			return;
 		} else if (AuthCode == Auth.AUTH_CODE_AUTH_SUCCESS) {
 			LogUtil.i("tv_launcher", "get AuthCode :AUTH_CODE_AUTH_SUCCESS");
-			if (TextUtils.isEmpty(user_id)) {
-				LogUtil.e("tv_launcher", "get user_id is null ,start epg error");
-				UIUtil.sendBroadCast(context, Constants.ADVERTISING_ACTION,
-						new Intent());// 节目播放业务
-				SharedPreferencesUtil.setBooleanValue(context,
-						SharedPreferencesUtil.IS_PALYED_ADVERT, true);
-				// finish();
-				LogUtil.i("tv_launcher",
-						"send BroadCast to play iptv,start time:" + new Date());
-				return;
-			}
-			String[] strings = new String[] { user_id.trim() };
-			Uri localUri = Uri
-					.parse("content://com.vunke.tvlauncher.provider2/group_strategy");
-			Cursor localCursor = context.getContentResolver().query(localUri,
-					null, null, strings, null);
-			GroupStrategyBean bean = new GroupStrategyBean();
-			try {
-				if (localCursor.moveToNext()) {
-					bean.setEPGcode(localCursor.getString(localCursor
-							.getColumnIndex("epg_code")));
-					bean.setEPGpackage(localCursor.getString(localCursor
-							.getColumnIndex("epg_package")));
-					bean.setGroupAddress(localCursor.getString(localCursor
-							.getColumnIndex("group_address")));
-					bean.setGroupName(localCursor.getString(localCursor
-							.getColumnIndex("group_name")));
-					bean.setGroupStatus(localCursor.getString(localCursor
-							.getColumnIndex("group_status")));
-					bean.setGroupType(localCursor.getString(localCursor
-							.getColumnIndex("group_type")));
-					bean.setGrpupNumber(localCursor.getString(localCursor
-							.getColumnIndex("group_number")));
-					// bean.setCreateTime(localCursor.getString(localCursor.getColumnIndex("create_time")));
-					bean.setUserId(localCursor.getString(localCursor
-							.getColumnIndex("user_id")));
-				}
-			} catch (Exception e){
-				LogUtil.e("tv_launcher","get group_strategy error ,sql select failed");
-				bean.setUserId(user_id.trim());
-				StartLastEpg(context, bean);
-			}finally {
-				if (localCursor != null)
-					localCursor.close();
-			}
-			if (!TextUtils.isEmpty(bean.getEPGpackage())) {
-				// LogUtil.e("tv_launcher", "bean :"+ bean.toString());
-				PackageInfo getPackageInfo = Auth.GetPackageInfo(context,
-						bean.getEPGpackage());
-				if (getPackageInfo != null) {
-					LogUtil.e(
-							"tv_launcher",
-							"get epg_package info success ,start epg :"
-									+ bean.getEPGpackage());
-					StartEPG(bean.getEPGpackage(), context);
-					setPackageName(context, bean.getUserId(),
-							bean.getEPGpackage());
-				} else {
-					StartLastEpg(context, bean);
-				}
-			} else {
-				StartLastEpg(context, bean);
-			}
+			Intent intent = new Intent(context,AuthSuccessActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			intent.putExtra("user_id", user_id);
+			context.startActivity(intent);
 		} else if (AuthCode == Auth.AUTH_CODE_AUTH_NOT_AUTH) {
 			LogUtil.i("tv_launcher", "get AuthCode :AUTH_CODE_AUTH_NOT_AUTH");
 			StartAuthActivity(context);
@@ -261,14 +203,14 @@ public class UIUtil {
 	 * 
 	 * @param context
 	 */
-	private static void StartAuthActivity(Context context) {
+	public static void StartAuthActivity(Context context) {
 		LogUtil.i("tv_launcher", "auth failed ,start AuthActivity");
 		Intent intent = new Intent(context, AuthActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(intent);
 	}
 
-	private static void StartLastEpg(Context context, GroupStrategyBean bean) {
+	public static void StartLastEpg(Context context, GroupStrategyBean bean) {
 		LogUtil.e("tv_launcher",
 				"get epg_package info failed ,start'up last time epg");
 		if (TextUtils.isEmpty(bean.getUserId())){

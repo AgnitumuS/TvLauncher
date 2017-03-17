@@ -16,12 +16,12 @@
         "source": "D:\\Android\\TvLauncher\\gongzhongban_tv_launcher\\TvLauncher\\res\\drawable\\btn_confirm_shap.xml"
     },
     {
-        "merged": "D:\\Android\\TvLauncher\\gongzhongban_tv_launcher\\TvLauncher\\build\\intermediates\\res\\merged\\debug\\drawable\\common_btn_sel.xml",
-        "source": "D:\\Android\\TvLauncher\\gongzhongban_tv_launcher\\TvLauncher\\res\\drawable\\common_btn_sel.xml"
-    },
-    {
         "merged": "D:\\Android\\TvLauncher\\gongzhongban_tv_launcher\\TvLauncher\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_login_sel.xml",
         "source": "D:\\Android\\TvLauncher\\gongzhongban_tv_launcher\\TvLauncher\\res\\drawable\\btn_login_sel.xml"
+    },
+    {
+        "merged": "D:\\Android\\TvLauncher\\gongzhongban_tv_launcher\\TvLauncher\\build\\intermediates\\res\\merged\\debug\\drawable\\common_btn_sel.xml",
+        "source": "D:\\Android\\TvLauncher\\gongzhongban_tv_launcher\\TvLauncher\\res\\drawable\\common_btn_sel.xml"
     },
     {
         "merged": "D:\\Android\\TvLauncher\\gongzhongban_tv_launcher\\TvLauncher\\build\\intermediates\\res\\merged\\debug\\drawable\\layout_propmpt_shap.xml",

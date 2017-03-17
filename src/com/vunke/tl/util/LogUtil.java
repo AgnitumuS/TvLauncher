@@ -16,7 +16,7 @@ public class LogUtil {
 	
 
 	public static void i(String className, String content) {
-		Log.i(className, "time:" + getDateTime() + ";" + "[e]" + ";"
+		Log.i(className, "time:" + getDateTime() + ";" + "[i]" + ";"
 				+ "tvlauncher:\n" + content);
 	}
 	public static void a(String content) {
@@ -30,7 +30,7 @@ public class LogUtil {
 	}
 
 	public static void e(String className, String content) {
-		Log.e(className, "time:" + getDateTime() + ";" + "[i]" + ";"
+		Log.e(className, "time:" + getDateTime() + ";" + "[e]" + ";"
 				+ "tvlauncher:\n" + content);
 	}
 
@@ -45,7 +45,7 @@ public class LogUtil {
 	}
 	
 	public static void i(String className, String content, Throwable e) {
-		Log.i(className, "time:" + getDateTime() + ";" + "[e]" + ";"
+		Log.i(className, "time:" + getDateTime() + ";" + "[i]" + ";"
 				+ "tvlauncher:\n" + content, e);
 	}
 	public static void a(String content, Throwable e) {
@@ -58,7 +58,7 @@ public class LogUtil {
 	}
 
 	public static void e(String className, String content, Throwable e) {
-		Log.e(className, "time:" + getDateTime() + ";" + "[i]" + ";"
+		Log.e(className, "time:" + getDateTime() + ";" + "[e]" + ";"
 				+ "tvlauncher:\n" + content, e);
 	}
 

@@ -19,8 +19,9 @@ import com.vunke.tl.auth.AuthInfo;
 import com.vunke.tl.auth.GroupInfo;
 import com.vunke.tl.base.Config;
 import com.vunke.tl.base.UIUtil;
+import com.vunke.tl.bean.GroupStrategy;
 import com.vunke.tl.bean.NotifyBean;
-import com.vunke.tl.service.GroupStrategy.GroupStrategyBean;
+import com.vunke.tl.bean.GroupStrategy.GroupStrategyBean;
 import com.vunke.tl.util.Constants;
 import com.vunke.tl.util.LogUtil;
 import com.vunke.tl.util.MACUtil;
@@ -38,6 +39,7 @@ public class NotifyService extends Service {
 	public static final String actionName = "com.kxy.tl.notify";
 	private AuthInfo authInfo;
 	private GroupStrategyBean bean;
+	private int AuthNum = 0;
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
@@ -114,6 +116,19 @@ public class NotifyService extends Service {
 				} else {
 					LogUtil.i("tv_launcher", "network not connect");
 					handler.sendEmptyMessageDelayed(0x1211, 2000);
+				}
+				break;
+			case 0x1212:
+				if (UIUtil.isNetConnected(getApplicationContext()) == true) {
+					AuthNum++;
+					if(AuthNum<=2){
+						LogUtil.i("tv_launcher", "restart auth ,authNum:"+AuthNum);
+						GetUserToken();
+					}else{
+						AuthNum = 0;
+					}
+				}else{
+					handler.sendEmptyMessageDelayed(0x1212, 2000);
 				}
 				break;
 			default:
@@ -245,6 +260,7 @@ public class NotifyService extends Service {
 						super.onError(isFromCache, call, response, e);
 						Auth.setAuthCode(getApplicationContext(),Auth.AUTH_CODE_AUTH_ERROR);
 						LogUtil.e("tv_launcher", "get userToken request error");
+						handler.sendEmptyMessage(0x1212);
 					}
 				});
 	}
@@ -303,6 +319,7 @@ public class NotifyService extends Service {
 						super.onError(isFromCache, call, response, e);
 						LogUtil.e("tv_launcher", "get authInfo request error");
 						Auth.setAuthCode(getApplicationContext(),Auth.AUTH_CODE_AUTH_ERROR);
+						handler.sendEmptyMessage(0x1212);
 					}
 				});
 
@@ -316,8 +333,7 @@ public class NotifyService extends Service {
 					@Override
 					public void onResponse(boolean isFromCache, String t,
 							Request request, @Nullable Response response) {
-						 LogUtil.i("tv_launcher", "get groupfile success" +
-						 t);
+						 LogUtil.i("tv_launcher", "get groupfile success");
 						try {
 							// saveFile(t);
 							if (!TextUtils.isEmpty(t)) {
@@ -378,6 +394,7 @@ public class NotifyService extends Service {
 						super.onError(isFromCache, call, response, e);
 						LogUtil.e("tv_launcher",
 								"get group strategy failed request error");
+						handler.sendEmptyMessage(0x1212);
 					}
 				});
 	}

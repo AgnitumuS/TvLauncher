@@ -86,11 +86,12 @@ public final class R {
     }
     public static final class layout {
         public static final int activity_auth=0x7f030000;
-        public static final int activity_main=0x7f030001;
-        public static final int activity_notify=0x7f030002;
-        public static final int dialog_tipinfo=0x7f030003;
-        public static final int pic_dispaly=0x7f030004;
-        public static final int video_surface=0x7f030005;
+        public static final int activity_auth_success=0x7f030001;
+        public static final int activity_main=0x7f030002;
+        public static final int activity_notify=0x7f030003;
+        public static final int dialog_tipinfo=0x7f030004;
+        public static final int pic_dispaly=0x7f030005;
+        public static final int video_surface=0x7f030006;
     }
     public static final class menu {
         public static final int main=0x7f080000;
@@ -99,9 +100,11 @@ public final class R {
         public static final int app_name=0x7f060000;
         public static final int auth_error=0x7f060005;
         public static final int confirm=0x7f060006;
+        public static final int determin=0x7f060007;
         public static final int empty_pwd_tip=0x7f060002;
         public static final int empty_username_tip=0x7f060001;
         public static final int goback_cancel=0x7f060004;
+        public static final int please_enter_code=0x7f060008;
         public static final int prompt=0x7f060003;
     }
     public static final class style {

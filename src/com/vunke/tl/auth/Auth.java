@@ -23,7 +23,7 @@ import android.widget.Toast;
 import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.callback.StringCallback;
 import com.vunke.tl.base.Config;
-import com.vunke.tl.service.GroupStrategy.GroupStrategyBean;
+import com.vunke.tl.bean.GroupStrategy.GroupStrategyBean;
 import com.vunke.tl.util.LogUtil;
 
 import org.json.JSONObject;
