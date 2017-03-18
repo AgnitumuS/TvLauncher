@@ -3,8 +3,6 @@ package com.kxy.tl.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -55,40 +53,7 @@ public class AuthSuccessActivity extends BaseActivity{
 					"send BroadCast to play iptv,start time:" + new Date());
 			return;
 		}
-		String[] strings = new String[] { user_id.trim() };
-		Uri localUri = Uri
-				.parse("content://com.vunke.tvlauncher.provider2/group_strategy");
-		Cursor localCursor = context.getContentResolver().query(localUri,
-				null, null, strings, null);
-		GroupStrategyBean bean = new GroupStrategyBean();
-		try {
-			if (localCursor.moveToNext()) {
-				bean.setEPGcode(localCursor.getString(localCursor
-						.getColumnIndex("epg_code")));
-				bean.setEPGpackage(localCursor.getString(localCursor
-						.getColumnIndex("epg_package")));
-				bean.setGroupAddress(localCursor.getString(localCursor
-						.getColumnIndex("group_address")));
-				bean.setGroupName(localCursor.getString(localCursor
-						.getColumnIndex("group_name")));
-				bean.setGroupStatus(localCursor.getString(localCursor
-						.getColumnIndex("group_status")));
-				bean.setGroupType(localCursor.getString(localCursor
-						.getColumnIndex("group_type")));
-				bean.setGrpupNumber(localCursor.getString(localCursor
-						.getColumnIndex("group_number")));
-				// bean.setCreateTime(localCursor.getString(localCursor.getColumnIndex("create_time")));
-				bean.setUserId(localCursor.getString(localCursor
-						.getColumnIndex("user_id")));
-			}
-		} catch (Exception e){
-			LogUtil.e("tv_launcher","get group_strategy error ,sql select failed");
-			bean.setUserId(user_id.trim());
-			UIUtil.StartLastEpg(context, bean);
-		}finally {
-			if (localCursor != null)
-				localCursor.close();
-		}
+		GroupStrategyBean bean = Auth.getGroupStrategyBean(context, user_id);
 		if (!TextUtils.isEmpty(bean.getEPGpackage())) {
 			// LogUtil.e("tv_launcher", "bean :"+ bean.toString());
 			PackageInfo getPackageInfo = Auth.GetPackageInfo(context,
@@ -107,8 +72,9 @@ public class AuthSuccessActivity extends BaseActivity{
 		} else {
 			UIUtil.StartLastEpg(context, bean);
 		}
-	
 	}
+
+
 //	@Override
 //	public boolean onKeyDown(int keyCode, KeyEvent event) {
 //		if (keyCode == KeyEvent.KEYCODE_BACK) {

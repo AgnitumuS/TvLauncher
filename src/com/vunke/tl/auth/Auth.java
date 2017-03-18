@@ -17,12 +17,14 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.RemoteException;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.callback.StringCallback;
 import com.vunke.tl.base.Config;
+import com.vunke.tl.base.UIUtil;
 import com.vunke.tl.bean.GroupStrategy.GroupStrategyBean;
 import com.vunke.tl.util.LogUtil;
 
@@ -350,7 +352,44 @@ public class Auth {
             e.printStackTrace();
         }
     }
-
+    @NonNull
+    public static GroupStrategyBean getGroupStrategyBean(Context context, String user_id) {
+        String[] strings = new String[] { user_id.trim() };
+        Uri localUri = Uri
+                .parse("content://com.vunke.tvlauncher.provider2/group_strategy");
+        Cursor localCursor = context.getContentResolver().query(localUri,
+                null, null, strings, null);
+        GroupStrategyBean bean = new GroupStrategyBean();
+        try {
+            if (localCursor.moveToNext()) {
+                bean.setEPGcode(localCursor.getString(localCursor
+                        .getColumnIndex("epg_code")));
+                bean.setEPGpackage(localCursor.getString(localCursor
+                        .getColumnIndex("epg_package")));
+                bean.setGroupAddress(localCursor.getString(localCursor
+                        .getColumnIndex("group_address")));
+                bean.setGroupName(localCursor.getString(localCursor
+                        .getColumnIndex("group_name")));
+                bean.setGroupStatus(localCursor.getString(localCursor
+                        .getColumnIndex("group_status")));
+                bean.setGroupType(localCursor.getString(localCursor
+                        .getColumnIndex("group_type")));
+                bean.setGrpupNumber(localCursor.getString(localCursor
+                        .getColumnIndex("group_number")));
+                // bean.setCreateTime(localCursor.getString(localCursor.getColumnIndex("create_time")));
+                bean.setUserId(localCursor.getString(localCursor
+                        .getColumnIndex("user_id")));
+            }
+        } catch (Exception e){
+            LogUtil.e("tv_launcher","get group_strategy error ,sql select failed");
+            bean.setUserId(user_id.trim());
+            UIUtil.StartLastEpg(context, bean);
+        }finally {
+            if (localCursor != null)
+                localCursor.close();
+        }
+        return bean;
+    }
     public static void StartEPG(Context context, GroupInfo groupInfo,
                                 AuthInfo authInfo, StringCallback callback) {
         // String userGroupNum = groupInfo.getUserGroupNmb();
