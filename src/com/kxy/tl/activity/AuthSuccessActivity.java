@@ -1,7 +1,5 @@
 package com.kxy.tl.activity;
 
-import java.util.Date;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -9,7 +7,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 
 import com.kxy.tl.R;
 import com.vunke.tl.auth.Auth;
@@ -19,6 +16,8 @@ import com.vunke.tl.bean.GroupStrategy.GroupStrategyBean;
 import com.vunke.tl.util.Constants;
 import com.vunke.tl.util.LogUtil;
 import com.vunke.tl.util.SharedPreferencesUtil;
+
+import java.util.Date;
 
 public class AuthSuccessActivity extends BaseActivity{
 	private Intent intent;
